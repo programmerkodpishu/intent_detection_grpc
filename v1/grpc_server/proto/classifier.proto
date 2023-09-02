@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package classifier;
+
+service SoundSourceClassifier {
+
+    // Predict music genre 
+
+    rpc PredictMusicGenre (MusicGenreRequest) returns (MusicGenreResponse);
+
+
+}
+
+
+message MusicGenreRequest {
+    repeated int64 signal = 1;
+
+}
+
+message MusicGenreResponse {
+    repeated string genres = 1;
+}

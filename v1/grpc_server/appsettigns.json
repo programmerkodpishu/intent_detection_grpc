@@ -1,0 +1,11 @@
+{
+    "sample_rate": 8000,
+    "piece_len": 0.3,
+    "wav_pat": "9_genres_record.wav",
+    "wav_len": 45,
+
+    "n_fft": 256,
+    "n_mfcc": 13,
+    "hop_length":64
+
+}
