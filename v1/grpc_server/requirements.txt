@@ -1,0 +1,7 @@
+grpc-cpp
+grpcio-tools
+numpy
+pandas
+keras
+tensorflow
+

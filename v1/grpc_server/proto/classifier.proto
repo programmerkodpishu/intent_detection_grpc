@@ -1,3 +1,4 @@
+
 syntax = "proto3";
 
 package classifier;
@@ -11,12 +12,17 @@ service SoundSourceClassifier {
 
 }
 
-
 message MusicGenreRequest {
     repeated int64 signal = 1;
+    int64 sample_rate = 2;
+    string model_name = 3;
+    string librosa_settings = 4;
 
 }
 
 message MusicGenreResponse {
     repeated string genres = 1;
+    string status = 2;
+    string exception = 3;
+    int32 execution_time = 4;
 }
