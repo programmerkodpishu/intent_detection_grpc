@@ -19,11 +19,6 @@ class SoundSourceClassifierStub(object):
         request_serializer=classifier__pb2.MusicGenreRequest.SerializeToString,
         response_deserializer=classifier__pb2.MusicGenreResponse.FromString,
         )
-    self.LoadLibrosaSettings = channel.unary_unary(
-        '/classifier.SoundSourceClassifier/LoadLibrosaSettings',
-        request_serializer=classifier__pb2.LibrosaSettingsRequest.SerializeToString,
-        response_deserializer=classifier__pb2.LibrosaSettingsResponse.FromString,
-        )
 
 
 class SoundSourceClassifierServicer(object):
@@ -38,13 +33,6 @@ class SoundSourceClassifierServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
-  def LoadLibrosaSettings(self, request, context):
-    """Load liborsa and mfcc settings
-    """
-    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-    context.set_details('Method not implemented!')
-    raise NotImplementedError('Method not implemented!')
-
 
 def add_SoundSourceClassifierServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -52,11 +40,6 @@ def add_SoundSourceClassifierServicer_to_server(servicer, server):
           servicer.PredictMusicGenre,
           request_deserializer=classifier__pb2.MusicGenreRequest.FromString,
           response_serializer=classifier__pb2.MusicGenreResponse.SerializeToString,
-      ),
-      'LoadLibrosaSettings': grpc.unary_unary_rpc_method_handler(
-          servicer.LoadLibrosaSettings,
-          request_deserializer=classifier__pb2.LibrosaSettingsRequest.FromString,
-          response_serializer=classifier__pb2.LibrosaSettingsResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

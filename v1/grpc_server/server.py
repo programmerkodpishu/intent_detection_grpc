@@ -77,19 +77,25 @@ GENRES = [
 
 class SoundClassifierService(classifier_pb2_grpc.SoundSourceClassifierServicer):
     def __init__(self, model_librosa_settings_json):
-        self.models = self.upload_models(model_librosa_settings_json)
+        self.models_presets = self.upload_models(model_librosa_settings_json)
 
-    @staticmethod
-    def upload_models(self, model_librosa_settings_json):
-        path = f"{os.getcwd()}/models/{model_librosa_settings_json}"
-        with open(path, 'r') as fp:
+    def upload_models(self, model_librosa_settings_json="models_librosa_settings.json") -> dict:
+        path_to_models =  f"{os.getcwd()}/models"
+        path_to_models_settings = f"{path_to_models}/{model_librosa_settings_json}"
+        with open(path_to_models_settings, 'r') as fp:
             settings = json.load(fp)
             r = dict()
             for s in settings:
                 tmp = dict()
                 model_name = s["model_name"]
+
+                path_to_model = f"{path_to_models}/{model_name}"
+                if not os.path.exists(path_to_model):
+                    continue
+
                 try:
-                    model = tf.keras.models.load_model(f"{os.getcwd()}/{model_name}")
+
+                    model = tf.keras.models.load_model(path_to_model)
                     tmp["model"] = model
                     tmp["is_ready"] = True
 
@@ -106,11 +112,11 @@ class SoundClassifierService(classifier_pb2_grpc.SoundSourceClassifierServicer):
 
     def get_model(self, reqeust):
 
-        if not reqeust.model_name in self.models.keys():
+        if not reqeust.model_name in self.models_presets.keys():
             return
 
     def PredictMusicGenre(self, request, context):
-
+        # поставить таймер скорости выполнения
         start_time = time.time()
 
         signal_ln = len(request.signal)
@@ -122,7 +128,7 @@ class SoundClassifierService(classifier_pb2_grpc.SoundSourceClassifierServicer):
                 exception=str(None),
                 execution_time=end_time - start_time)
 
-        if not request.model_name in self.models.keys():
+        if not request.model_name in self.models_presets.keys():
             end_time = time.time()
             return classifier_pb2.MusicGenreResponse(
                 genres=[],
@@ -132,9 +138,10 @@ class SoundClassifierService(classifier_pb2_grpc.SoundSourceClassifierServicer):
 
         librosa_settings = json.loads(request.librosa_settings.replace("'", '"'))
 
-        model: tf.keras.Model = tf.keras.Model(self.models[request.model_name])
+        model_preset = self.models_presets[request.model_name]
+        keras_model = model_preset["model"]
         requested_sr = librosa_settings["sample_rate"]
-        model_sr = model["sample_rate"]
+        model_sr = model_preset["sample_rate"]
 
         if requested_sr != model_sr:
             end_time = time.time()
@@ -146,42 +153,39 @@ class SoundClassifierService(classifier_pb2_grpc.SoundSourceClassifierServicer):
                 exception=str(None),
                 execution_time=end_time - start_time)
 
-        sub_signals = np.array(request.signal)[::model_sr]
+        sub_signals = np.array(request.signal)
 
         r = []
 
-        for s in sub_signals:
-            mfcc = librosa.feature.mfcc(
-                y=s,
-                sr=librosa_settings["sample_rate"],
-                n_fft=librosa_settings["n_fft"],
-                n_mfcc=librosa_settings["n_mfcc"],
-                hop_lengt=librosa_settings["hop_length"]
-            ).T
-            mfcc_arr = np.array(mfcc)[np.newaxis, ...]
+       # for s in sub_signals:
+        mfcc = librosa.feature.mfcc(
+            y=sub_signals,
+            sr=librosa_settings["sample_rate"],
+            n_fft=librosa_settings["n_fft"],
+            n_mfcc=librosa_settings["n_mfcc"],
+            hop_length=librosa_settings["hop_length"]
+        ).T
+        mfcc_arr = np.array(mfcc)[np.newaxis, ...]
 
-            prediction = model.predict(mfcc_arr)
-            max_arg = np.argmax(prediction, axis=1)[0]
-            genre = GENRES[max_arg]
-            r.append(genre)
+        prediction = keras_model.predict(mfcc_arr)
+        max_arg = np.argmax(prediction, axis=1)[0]
+        genre = GENRES[max_arg]
+        r.append(genre)
 
         end_time = time.time()
+
 
         return classifier_pb2.MusicGenreResponse(
 
             genres=r,
             status=f"done",
-            exception=str(None),
-            execution_time=end_time - start_time)
-
-
+            exception="None",
+            execution_time=int(end_time - start_time))
 
 
 def serve(model_librosa_settings_json):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    service = SoundClassifierService(
-
-    )
+    service = SoundClassifierService(model_librosa_settings_json="models_librosa_settings.json")
 
     classifier_pb2_grpc.add_SoundSourceClassifierServicer_to_server(service, server)
     server.add_insecure_port("localhost:5001")

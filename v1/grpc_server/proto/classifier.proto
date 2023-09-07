@@ -13,7 +13,7 @@ service SoundSourceClassifier {
 }
 
 message MusicGenreRequest {
-    repeated int64 signal = 1;
+    repeated double signal = 1;
     int64 sample_rate = 2;
     string model_name = 3;
     string librosa_settings = 4;

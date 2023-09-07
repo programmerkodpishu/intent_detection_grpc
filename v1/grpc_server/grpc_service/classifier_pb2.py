@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='classifier',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=_b('\n\x10\x63lassifier.proto\x12\nclassifier\"#\n\x11MusicGenreRequest\x12\x0e\n\x06signal\x18\x01 \x03(\x03\"$\n\x12MusicGenreResponse\x12\x0e\n\x06genres\x18\x01 \x03(\t\"\"\n\x04Pair\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"3\n\x16LibrosaSettingsRequest\x12\x19\n\x11settings_filename\x18\x01 \x01(\t\"8\n\x17LibrosaSettingsResponse\x12\x1d\n\x15librosa_settings_json\x18\x01 \x01(\t2\xcb\x01\n\x15SoundSourceClassifier\x12R\n\x11PredictMusicGenre\x12\x1d.classifier.MusicGenreRequest\x1a\x1e.classifier.MusicGenreResponse\x12^\n\x13LoadLibrosaSettings\x12\".classifier.LibrosaSettingsRequest\x1a#.classifier.LibrosaSettingsResponseb\x06proto3')
+  serialized_pb=_b('\n\x10\x63lassifier.proto\x12\nclassifier\"f\n\x11MusicGenreRequest\x12\x0e\n\x06signal\x18\x01 \x03(\x01\x12\x13\n\x0bsample_rate\x18\x02 \x01(\x03\x12\x12\n\nmodel_name\x18\x03 \x01(\t\x12\x18\n\x10librosa_settings\x18\x04 \x01(\t\"_\n\x12MusicGenreResponse\x12\x0e\n\x06genres\x18\x01 \x03(\t\x12\x0e\n\x06status\x18\x02 \x01(\t\x12\x11\n\texception\x18\x03 \x01(\t\x12\x16\n\x0e\x65xecution_time\x18\x04 \x01(\x05\x32k\n\x15SoundSourceClassifier\x12R\n\x11PredictMusicGenre\x12\x1d.classifier.MusicGenreRequest\x1a\x1e.classifier.MusicGenreResponseb\x06proto3')
 )
 
 
@@ -34,8 +34,29 @@ _MUSICGENREREQUEST = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='signal', full_name='classifier.MusicGenreRequest.signal', index=0,
-      number=1, type=3, cpp_type=2, label=3,
+      number=1, type=1, cpp_type=5, label=3,
       has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='sample_rate', full_name='classifier.MusicGenreRequest.sample_rate', index=1,
+      number=2, type=3, cpp_type=2, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='model_name', full_name='classifier.MusicGenreRequest.model_name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='librosa_settings', full_name='classifier.MusicGenreRequest.librosa_settings', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -52,7 +73,7 @@ _MUSICGENREREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=32,
-  serialized_end=67,
+  serialized_end=134,
 )
 
 
@@ -70,72 +91,24 @@ _MUSICGENRERESPONSE = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=69,
-  serialized_end=105,
-)
-
-
-_PAIR = _descriptor.Descriptor(
-  name='Pair',
-  full_name='classifier.Pair',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
     _descriptor.FieldDescriptor(
-      name='key', full_name='classifier.Pair.key', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='classifier.Pair.value', index=1,
+      name='status', full_name='classifier.MusicGenreResponse.status', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=107,
-  serialized_end=141,
-)
-
-
-_LIBROSASETTINGSREQUEST = _descriptor.Descriptor(
-  name='LibrosaSettingsRequest',
-  full_name='classifier.LibrosaSettingsRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
     _descriptor.FieldDescriptor(
-      name='settings_filename', full_name='classifier.LibrosaSettingsRequest.settings_filename', index=0,
-      number=1, type=9, cpp_type=9, label=1,
+      name='exception', full_name='classifier.MusicGenreResponse.exception', index=2,
+      number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='execution_time', full_name='classifier.MusicGenreResponse.execution_time', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
@@ -151,46 +124,12 @@ _LIBROSASETTINGSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=143,
-  serialized_end=194,
-)
-
-
-_LIBROSASETTINGSRESPONSE = _descriptor.Descriptor(
-  name='LibrosaSettingsResponse',
-  full_name='classifier.LibrosaSettingsResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='librosa_settings_json', full_name='classifier.LibrosaSettingsResponse.librosa_settings_json', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=196,
-  serialized_end=252,
+  serialized_start=136,
+  serialized_end=231,
 )
 
 DESCRIPTOR.message_types_by_name['MusicGenreRequest'] = _MUSICGENREREQUEST
 DESCRIPTOR.message_types_by_name['MusicGenreResponse'] = _MUSICGENRERESPONSE
-DESCRIPTOR.message_types_by_name['Pair'] = _PAIR
-DESCRIPTOR.message_types_by_name['LibrosaSettingsRequest'] = _LIBROSASETTINGSREQUEST
-DESCRIPTOR.message_types_by_name['LibrosaSettingsResponse'] = _LIBROSASETTINGSRESPONSE
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 MusicGenreRequest = _reflection.GeneratedProtocolMessageType('MusicGenreRequest', (_message.Message,), dict(
@@ -207,27 +146,6 @@ MusicGenreResponse = _reflection.GeneratedProtocolMessageType('MusicGenreRespons
   ))
 _sym_db.RegisterMessage(MusicGenreResponse)
 
-Pair = _reflection.GeneratedProtocolMessageType('Pair', (_message.Message,), dict(
-  DESCRIPTOR = _PAIR,
-  __module__ = 'classifier_pb2'
-  # @@protoc_insertion_point(class_scope:classifier.Pair)
-  ))
-_sym_db.RegisterMessage(Pair)
-
-LibrosaSettingsRequest = _reflection.GeneratedProtocolMessageType('LibrosaSettingsRequest', (_message.Message,), dict(
-  DESCRIPTOR = _LIBROSASETTINGSREQUEST,
-  __module__ = 'classifier_pb2'
-  # @@protoc_insertion_point(class_scope:classifier.LibrosaSettingsRequest)
-  ))
-_sym_db.RegisterMessage(LibrosaSettingsRequest)
-
-LibrosaSettingsResponse = _reflection.GeneratedProtocolMessageType('LibrosaSettingsResponse', (_message.Message,), dict(
-  DESCRIPTOR = _LIBROSASETTINGSRESPONSE,
-  __module__ = 'classifier_pb2'
-  # @@protoc_insertion_point(class_scope:classifier.LibrosaSettingsResponse)
-  ))
-_sym_db.RegisterMessage(LibrosaSettingsResponse)
-
 
 
 _SOUNDSOURCECLASSIFIER = _descriptor.ServiceDescriptor(
@@ -236,8 +154,8 @@ _SOUNDSOURCECLASSIFIER = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=255,
-  serialized_end=458,
+  serialized_start=233,
+  serialized_end=340,
   methods=[
   _descriptor.MethodDescriptor(
     name='PredictMusicGenre',
@@ -246,15 +164,6 @@ _SOUNDSOURCECLASSIFIER = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_MUSICGENREREQUEST,
     output_type=_MUSICGENRERESPONSE,
-    serialized_options=None,
-  ),
-  _descriptor.MethodDescriptor(
-    name='LoadLibrosaSettings',
-    full_name='classifier.SoundSourceClassifier.LoadLibrosaSettings',
-    index=1,
-    containing_service=None,
-    input_type=_LIBROSASETTINGSREQUEST,
-    output_type=_LIBROSASETTINGSRESPONSE,
     serialized_options=None,
   ),
 ])
